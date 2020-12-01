@@ -41,6 +41,7 @@ describe(PhotoFrameComponent.name, () => {
       component.like();
       tick(500);
       component.like();
+      tick(500);
       expect(times).toBe(2);
     }));
 });
