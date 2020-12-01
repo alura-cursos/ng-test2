@@ -1,4 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { faTicketAlt } from '@fortawesome/free-solid-svg-icons';
 import { PhotoFrameComponent } from './photo-frame.component';
 import { PhotoFrameModule } from './photo-frame.module';
 
@@ -21,12 +22,25 @@ describe(PhotoFrameComponent.name, () => {
 
   it(`#${PhotoFrameComponent.prototype.like.name}
     should trigger (@Output liked) once when called
-    multiple times within debounce time`, () => {
+    multiple times within debounce time`, fakeAsync(() => {
       fixture.detectChanges();
       let times = 0;
       component.liked.subscribe(() => times++);
       component.like();
       component.like();
+      tick(500);
       expect(times).toBe(1);
-  });
+  }));
+
+  it(`#${PhotoFrameComponent.prototype.like.name}
+    should trigger (@Output liked) two times when
+    called outside debounce time`, fakeAsync(() => {
+      fixture.detectChanges();
+      let times = 0;
+      component.liked.subscribe(() => times++);
+      component.like();
+      tick(500);
+      component.like();
+      expect(times).toBe(2);
+    }));
 });
